@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { connect } from 'react-redux';
-import actions from '../../redux/contacts/contacts-action';
+import { useCreateContactMutation } from '../../redux/contacts/contactsSlice';
+// import { connect } from 'react-redux';
+// import actions from '../../redux/contacts/contacts-action';
 import s from './FormContact.module.css';
 
-function FormContact({onSubmit, contacts}){
+export default function FormContact({contacts}){
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const [createContact, {isLoading}] = useCreateContactMutation();
 
   function handelChange(e) {
     const {name, value} = e.currentTarget;
@@ -33,34 +35,8 @@ function FormContact({onSubmit, contacts}){
     ) {
       alert(`${name} is already in contacts`);
     } else {
-      onSubmit(resultSubmit);
+      createContact(resultSubmit);
     }
-    
-    
-
-    // if (
-    //   contacts.find(
-    //     contact => name.toUpperCase() === contact.name.toUpperCase(),
-    //   )
-    // ) {
-    //   alert(` is already in contacts`);
-    // } else if (
-    //   contacts.find(
-    //     contact => number === contact.number
-    //   )
-    // ) {
-    //   alert(` is already in contacts`);
-    // } 
-    // if (
-    //   contacts.find(
-    //     contact => name.toLowerCase() === contact.name.toLowerCase(),
-    //   )
-    // ) {
-    //   alert(`${name} is already in contacts`);
-    // }
-    // else {
-    //   onSubmit(resultSubmit);
-    // }
 
     reset();
   };
@@ -98,19 +74,11 @@ function FormContact({onSubmit, contacts}){
                 className={s.input}
               />
             </label>
-            <button type="submit" className={s.btn}>
-              Add Contact
+            <button type="submit" className={s.btn}>{
+              isLoading ? 'Sumbit': 'Add Contact'
+            }
             </button>
           </form>
         );
 }
 
-const mapStateToProps = ({ contacts: { items } }) => ({
-  contacts: items,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onSubmit: contact => dispatch(actions.addContact(contact)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(FormContact);

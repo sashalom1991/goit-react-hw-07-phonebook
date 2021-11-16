@@ -1,5 +1,7 @@
+import { useDelContactMutation } from "../../redux/contacts/contactsSlice";
 
 export default function ContactListItem  ({contact}) {
+    const [deleteContact] = useDelContactMutation(); 
     return (
         <li key={contact.id}>
             <span>
@@ -7,7 +9,8 @@ export default function ContactListItem  ({contact}) {
             </span>
 
             <button
-              type="button"  
+              type="button"
+              onClick={() => deleteContact(contact.id)}  
             >
               Delete
             </button>
