@@ -1,40 +1,32 @@
+import { useGetContactsQuery } from '../../redux/contacts/contactsSlice';
+import { connect } from 'react-redux';
+import ContactsListItem from '../ContactListItem/ContactListItem';
 
-export default function ContactsList({children}) {
-    
-    return (
-    <>
-      <ul >
-        {children}
+import s from './ContactsList.module.css';
+
+const ContactsList = ({searchName}) => {
+  const { data } = useGetContactsQuery();
+  const normalizedFilter = searchName.toUpperCase();
+
+  return (
+    <>{data && (
+      <ul className={s.list}>
+      {data.filter(contact => contact.name.toUpperCase().includes(normalizedFilter)).map(contactItem => 
+          <ContactsListItem contact={contactItem} key={contactItem.id} />
+        )}
       </ul>
+    )
+      
+    }
+      
     </>
   );
 };
 
 
-// const ContactsList = () => {
-//   const {data, isFetching, error} = useContactsApiQuery();
-//   return (
-//         <>
-//           <ul >
-//             {data && <h1>Ok</h1>}
-//             {/* {contacts.map(({ id, name, number }) => (
-//               <li key={id}>
-//                 <span>
-//                   <b>{name}</b>: {number}
-//                 </span>
 
-//                 <button
-//                   type="button"
-//                   onClick={() => delContact(id)}
-//                   className={s.btn}
-//                 >
-//                   Delete
-//                 </button>
-//               </li>
-//             ))} */}
-//           </ul>
-//         </>
-//       );
-// };
+const mapStateToProps = state => ({
+  searchName: state.filter,
+});
 
-// export default ContactsList;
+export default connect(mapStateToProps)(ContactsList);

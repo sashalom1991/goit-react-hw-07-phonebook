@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useCreateContactMutation } from '../../redux/contacts/contactsSlice';
+import { useGetContactsQuery } from '../../redux/contacts/contactsSlice';
 // import { connect } from 'react-redux';
 // import actions from '../../redux/contacts/contacts-action';
 import s from './FormContact.module.css';
 
-export default function FormContact({contacts}){
+export default function FormContact(){
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const {data:contacts} = useGetContactsQuery();
   const [createContact, {isLoading}] = useCreateContactMutation();
 
   function handelChange(e) {

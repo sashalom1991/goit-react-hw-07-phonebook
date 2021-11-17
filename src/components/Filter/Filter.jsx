@@ -13,12 +13,12 @@ const Filter = ({ value, onChangeFilter }) => {
         onChange={onChangeFilter}
         className={s.input}
       />
-    </label>
+    </label> 
   );
 };
 
 const mapStateToProps = state => ({
-  value: state.contacts.filter,
+  value: state.filter,
 })
 
 const mapDispatchToProps = dispatch => ({
