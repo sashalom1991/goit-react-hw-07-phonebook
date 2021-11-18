@@ -5,11 +5,13 @@ import { useGetContactsQuery } from './redux/contacts/contactsSlice';
 import FormContact from './components/FormContact';
 import ContactsList from './components/ContactsList';
 import Filter from './components/Filter/Filter';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
 import 'modern-normalize';
 import './App.css';
 
 export default function App() {
-  // const { data, isFetching, error } = useGetContactsQuery();
+  const { isFetching, isError } = useGetContactsQuery();
 
   return (
     <>
@@ -18,7 +20,16 @@ export default function App() {
         <FormContact />
         <h2>Contacts</h2>
         <Filter />
-        <ContactsList/>
+        {isFetching && (
+          <Box sx={{ width: '100%',
+          padding: '20px' }}>
+          <LinearProgress />
+        </Box>
+        )}
+        {isError && (
+          <p>Ups, we broke down &#128555; Please try again</p>
+        )}
+        <ContactsList />
       </div>
     </>
   );
